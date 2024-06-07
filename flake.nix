@@ -15,10 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   
-    # bobaboard = {
-    #   url = "github:bobaboard/boba-nixos";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    bobaboard = {
+      url = "github:bobaboard/boba-nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   
     snowfall-lib = {
       url = "github:snowfallorg/lib/dev";
@@ -49,7 +49,7 @@
   
       systems.modules.nixos = with inputs; [
         vscode-server.nixosModules.default
-        # bobaboard.nixosModules."services/bobaboard"
+        bobaboard.nixosModules."services/bobaboard"
       ];
 
       # These checks will run before deployment to check that everything

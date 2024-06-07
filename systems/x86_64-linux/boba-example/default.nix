@@ -53,6 +53,36 @@
     options = "--delete-older-than 30d";
   };
 
+  services.bobaboard = {
+    enable = true;
+
+    database = {
+      user = "postgres";
+      host = "127.0.0.1";
+      local = true;
+      seed = true;
+    };
+
+    server = {
+      # This has to be an address whose DNS is mapped to this
+      # server. It can be the address of any realm (or of no realm),
+      # as long as the DNS is mapped.
+      backend = {
+        address = "api.bobaboard.gay";
+      };
+      name =  "^(?<subdomain>.+)bobaboard\.gay$";
+    };
+
+    firebaseCredentials = "/var/lib/bobaboard/firebase-sdk.json";
+
+    ssl = {
+      # certificate = "${config.security.acme.certs."bobaboard.gay".directory}/fullchain.pem";
+      # key = "${config.security.acme.certs."bobaboard.gay".directory}/key.pem";
+      certificate = "/fullchain.pem";
+      key = "/key.pem";
+    };
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
