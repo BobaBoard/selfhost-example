@@ -76,10 +76,35 @@
     firebaseCredentials = "/var/lib/bobaboard/firebase-sdk.json";
 
     ssl = {
-      # certificate = "${config.security.acme.certs."bobaboard.gay".directory}/fullchain.pem";
-      # key = "${config.security.acme.certs."bobaboard.gay".directory}/key.pem";
-      certificate = "/fullchain.pem";
-      key = "/key.pem";
+      certificate = "${config.security.acme.certs."bobaboard.gay".directory}/fullchain.pem";
+      key = "${config.security.acme.certs."bobaboard.gay".directory}/key.pem";
+    };
+  };
+
+   security.acme = {
+    acceptTerms = true;
+
+    defaults = {
+      email = "essential.randomn3ss@gmail.com";
+      # Providers list and settings: https://go-acme.github.io/lego/dns/porkbun/
+      dnsProvider = "porkbun";
+      dnsPropagationCheck = true;
+
+      # Must be owned by user "acme" and group "nginx"
+      credentialsFile = "/var/lib/acme-secrets/porkbun";
+
+      # Makes certificates readable by nginx
+      group = lib.mkIf config.services.nginx.enable "nginx";
+
+      # Uncomment this to use the staging server
+      # server = "https://acme-staging-v02.api.letsencrypt.org/directory";
+
+      # Reload nginx when certs change.
+      reloadServices = lib.optional config.services.nginx.enable "nginx.service";
+    };
+
+    certs."bobaboard.gay" = {
+      domain = "*.bobaboard.gay";
     };
   };
 
